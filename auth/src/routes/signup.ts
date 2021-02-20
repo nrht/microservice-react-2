@@ -41,5 +41,4 @@ router.post('/api/users/signup/',
    }
 );
 
-
 export { router as signupRouter };

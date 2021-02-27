@@ -1,14 +1,14 @@
-
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { 
    validateRequest, 
    NotFoundError, 
    requireAuth,
-   NotAuthorizedError
+   NotAuthorizedError,
+   BadRequestError
 } from '@nrht-ms-demo/common';
 import { Ticket } from '../models/ticket';
-import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publishe';
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
@@ -33,6 +33,10 @@ router.put(
       throw new NotFoundError();
    }
 
+   if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket');
+   }
+
    if(ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
    }
@@ -48,6 +52,7 @@ router.put(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version
    });
 
    res.send(ticket);

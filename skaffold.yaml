@@ -40,3 +40,19 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: nrht/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: nrht/payments
+      context: payments 
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .

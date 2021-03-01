@@ -9,7 +9,7 @@ import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
-const EXPIRATION_WINDOW_SECONDS = 1 * 60;
+const EXPIRATION_WINDOW_SECONDS = 2 * 60;
 
 router.post('/api/orders', requireAuth, [
    body('ticketId')
@@ -30,7 +30,7 @@ router.post('/api/orders', requireAuth, [
    }
 
    const expiration = new Date();
-   expiration.setSeconds(expiration.getSeconds() + 15 * 60 + EXPIRATION_WINDOW_SECONDS);
+   expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
    const order = Order.build({
       userId: req.currentUser!.id,
